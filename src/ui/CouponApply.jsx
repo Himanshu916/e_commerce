@@ -1,12 +1,26 @@
 import styled from "styled-components";
 import Button from "./Button";
+import Heading from "./Heading";
+import { Tag } from "./Tag";
 
 const CouponBox = styled.div`
   margin: 1rem;
+  margin-top: 2.4rem;
   & h3 {
     font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 800px) {
+    max-width: 90rem;
+    margin: 1.5rem auto;
+    margin-top: 3rem;
+    & h3 {
+      font-size: 2.4rem;
+      font-weight: 500;
+      margin-bottom: 0.8rem;
+    }
   }
 `;
 
@@ -44,33 +58,41 @@ const Coupon = styled.div`
   margin-top: 1.5rem;
 
   & p {
-    background-color: lightgreen;
-    color: green;
+    background-color: var(--color-brand-200);
+    color: var(--color-brand-800);
     font-size: 1.2rem;
     margin: 0;
     display: flex;
     align-items: center;
     padding: 0.5rem;
     font-weight: 600;
-    border: 1px dashed green;
+    border: 2px dashed green;
   }
 `;
 
 function CouponApply() {
   return (
     <CouponBox>
-      <h3>Coupons</h3>
+      <Heading as="h3">Coupons</Heading>
       <Coupons>
         <p>Best Coupon For You</p>
         <p>All Coupons</p>
       </Coupons>
 
       <CouponDetail>
-        <h4>Extra Rs 47 Off</h4>
-        <p>15% off</p>
+        <Heading as="h4">Extra Rs 47 Off</Heading>
+        {/* <p>15% off</p> */}
+        <Tag type="discount">15% off</Tag>
         <Coupon>
           <p>Coupon Name</p>
-          <Button size="small" variation="primary">
+          <Button
+            style={{
+              backgroundColor: "var(--color-yellow-700)",
+              color: "var(--color-yellow-100)",
+            }}
+            size="small"
+            variation="primary"
+          >
             Apply Coupon
           </Button>
         </Coupon>

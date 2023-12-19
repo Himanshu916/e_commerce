@@ -1,6 +1,6 @@
-import Button from "../ui/Button";
-import ProductCard from "../ui/ProductCard";
-Button;
+import ProductCard from "../features/products/ProductCard";
+// import Button from "../ui/Button";
+
 function Product() {
   return <ProductCard />;
 }

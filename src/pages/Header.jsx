@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { HiMenu } from "react-icons/hi";
 import Modal from "../ui/Modal";
 import ModalNavigation from "../ui/ModalNavigation";
+import { useLogout } from "../features/authentication/useLogout";
+
 const StyledHeader = styled.div`
   grid-column: 1/-1;
   display: flex;
@@ -13,6 +15,7 @@ const StyledHeader = styled.div`
 `;
 
 function Header() {
+  const { logout, isLoading } = useLogout();
   return (
     <StyledHeader>
       <Modal>
@@ -46,7 +49,9 @@ function Header() {
           color: "#fff",
         }}
       >
-        H
+        <button disabled={isLoading} onClick={logout}>
+          Logout
+        </button>
       </div>
     </StyledHeader>
   );

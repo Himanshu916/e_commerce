@@ -1,7 +1,17 @@
 import { useEffect, useRef } from "react";
-import { HiHand } from "react-icons/hi";
+import {
+  HiOutlineArrowLeftOnRectangle,
+  HiOutlineHeart,
+  HiOutlineHome,
+  HiOutlinePaperAirplane,
+  HiOutlineRectangleStack,
+  HiOutlineShoppingBag,
+  HiOutlineWrench,
+} from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import Overlay from "./Overlay";
+import { useUser } from "../features/authentication/useUser";
 
 const Profile = styled.div`
   padding: 0 2rem;
@@ -11,20 +21,39 @@ const Profile = styled.div`
     font-size: 1.2rem;
   }
 `;
-
-const Avatar = styled.p`
-  background-color: green;
-  border-radius: 50%;
-  font-size: 1.8rem;
-  color: #fff;
+const StyledUserAvatar = styled.div`
   display: flex;
-  justify-content: center;
+  gap: 1.2rem;
   align-items: center;
-  width: 4.2rem;
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: var(--color-grey-600);
 `;
 
+const Avatar = styled.img`
+  display: block;
+  width: 4rem;
+  width: 3.6rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  outline: 2px solid var(--color-grey-100);
+`;
+
+// const Avatar = styled.p`
+//   background-color: green;
+//   border-radius: 50%;
+//   font-size: 1.8rem;
+//   color: #fff;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 4.2rem;
+// `;
+
 const Modal = styled.div`
-  background-color: var(--color-grey-100);
+  background-color: var(--color-grey-50);
   position: absolute;
   left: 0;
   top: 0;
@@ -33,27 +62,6 @@ const Modal = styled.div`
   padding: 0.5rem 0rem;
   transition: all 4s;
   z-index: 1000;
-`;
-
-const Overlay = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-  top: 0;
-  left: 0;
-  overflow-x: hidden;
-  bottom: 0;
-  backdrop-filter: blur(3px);
-  transition: all 4s;
-  z-index: 1000;
-
-  /* ${(props) =>
-    props.open === "nav" &&
-    css`
-      left: 0;
-      transition: all 4s linear;
-    `} */
 `;
 
 // Overlay.defaultProps={
@@ -69,18 +77,9 @@ const UnorderedList = styled.ul`
   border-bottom: 1px solid var(--color-grey-300);
   gap: 1rem;
   & li {
-    padding: 0.8rem 2rem;
-    border-top-right-radius: 100px;
-    border-bottom-right-radius: 100px;
-    background-color: var(--color-brand-500);
     color: var(--color-grey-800);
     margin-right: 1rem;
-
     align-items: center;
-  }
-
-  & li.active {
-    background-color: var(--color-brand-500);
   }
 
   & li a,
@@ -90,9 +89,23 @@ const UnorderedList = styled.ul`
   }
 
   & li a:link,
+  & li a:visited {
+    padding: 0.8rem 2rem;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    background-color: var(--color-brand-50);
+  }
+  & li a:link,
   & li a:visited,
   & li svg {
-    color: red;
+    color: inherit;
+  }
+
+  & li a:hover,
+  & li a:active,
+  & li .active:link,
+  & li .active:visited {
+    background-color: var(--color-brand-100);
   }
 
   & li a:hover,
@@ -101,7 +114,7 @@ const UnorderedList = styled.ul`
   & li .active:visited,
   & li a:active svg,
   & li a:hover svg {
-    color: yellow;
+    color: var(--color-brand-900);
   }
 `;
 
@@ -119,6 +132,10 @@ const P = styled.p`
 
 function ModalNavigation({ close }) {
   const myRef = useRef();
+  const { user } = useUser();
+
+  const { fullName, avatar } = user.user_metadata;
+  console.log(fullName, avatar, "hi");
 
   useEffect(
     function () {
@@ -139,17 +156,25 @@ function ModalNavigation({ close }) {
     <Overlay>
       <Modal ref={myRef}>
         <Profile>
-          <Avatar>H </Avatar>
+          <StyledUserAvatar>
+            <Avatar
+              src={avatar || "../../../public/default-user.jpg"}
+              alt={`H`}
+            />
+            {/* <span>{fullName}</span> */}
+          </StyledUserAvatar>
+
+          {/* <Avatar>H</Avatar> */}
           <div>
-            <p>Himanshu</p>
-            <p>email</p>
+            <p>{fullName}</p>
+            <p>{user.email}</p>
           </div>
         </Profile>
         <UnorderedList onClick={() => close()}>
           <li>
-            <NavLink to="app">
+            <NavLink to="/">
               <span>
-                <HiHand />{" "}
+                <HiOutlineHome />
               </span>
               <span>Home</span>
             </NavLink>
@@ -157,25 +182,49 @@ function ModalNavigation({ close }) {
           <li>
             <NavLink to="products">
               <span>
-                <HiHand />{" "}
+                <HiOutlinePaperAirplane />
               </span>
-              <span>Shop Now</span>
+              <span>Products</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="login">
+            <NavLink to="wishlist">
               <span>
-                <HiHand />{" "}
+                <HiOutlineHeart />
               </span>
-              <span> Profile</span>
+              <span> WishList</span>
             </NavLink>
           </li>
           <li>
             <NavLink to="cart">
               <span>
-                <HiHand />{" "}
+                <HiOutlineShoppingBag />
               </span>
-              <span> Addresses</span>
+              <span> Cart</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="orders">
+              <span>
+                <HiOutlineRectangleStack />
+              </span>
+              <span> Orders</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="account">
+              <span>
+                <HiOutlineWrench />
+              </span>
+              <span> Account</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="login">
+              <span>
+                <HiOutlineArrowLeftOnRectangle />
+              </span>
+              <span> Login/Logout</span>
             </NavLink>
           </li>
         </UnorderedList>

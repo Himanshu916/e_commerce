@@ -1,5 +1,6 @@
 import { cloneElement, createContext, useContext, useState } from "react";
 import styled from "styled-components";
+import Button from "./Button";
 
 const ModalContext = createContext();
 
@@ -19,8 +20,22 @@ const Hamburger = styled.button`
   font-size: 2.5rem;
 `;
 
-function ModalButton({ children, opens }) {
+function ModalButton({ children, opens, category }) {
   const { setOpen } = useContext(ModalContext);
+
+  if (category)
+    return (
+      <Button
+        onClick={() => {
+          setOpen(opens);
+        }}
+        variation="transparent"
+        size="iconText"
+      >
+        {children}
+      </Button>
+    );
+
   return (
     <Hamburger
       onClick={() => {

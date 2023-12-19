@@ -1,31 +1,43 @@
-import { CiHeart } from "react-icons/ci";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Button from "./Button";
+import {
+  HiHeart,
+  HiMiniShoppingCart,
+  HiMiniXMark,
+  HiOutlineHeart,
+  HiOutlineShoppingCart,
+} from "react-icons/hi2";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItemToWishlist,
+  deleteItemFromWishList,
+} from "../features/wishlist/wishlistSlice";
+import { useRef } from "react";
+import { addItemToCart } from "../features/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
 
-const WishListButton = styled.div`
-  background-color: none;
-  font-size: 2rem;
-
-  font-weight: 900;
-  cursor: pointer;
-  border: none;
-`;
 const StyledCard = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  background-color: var(--color-grey-50);
-  /* justify-content: space-between; */
   align-items: flex-start;
+  background-color: #fff;
+  gap: 0.75rem;
   cursor: pointer;
-
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  position: relative;
   & img {
-    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center;
     /* height: 60%; */
+    overflow: hidden;
   }
 
   & .product--about {
-    padding: 0.5rem 1.5rem;
+    padding: 0rem 1.5rem;
     width: 100%;
   }
   & div h1 {
@@ -41,38 +53,92 @@ const StyledCard = styled.div`
   }
 `;
 
-function Card({ product }) {
-  return (
-    <StyledCard>
-      <Link to="1234">
-        <img
-          src="https://rukminim2.flixcart.com/image/832/832/kpwybgw0/t-shirt/z/7/l/s-round-5-05-s-inktees-original-imag4f6qvhhbzubx.jpeg?q=70"
-          alt=""
-        />
-        <div className="product--about">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            <div>
-              <h1>{product.productName}</h1>
-              <p>{product.productAdjective}</p>
-            </div>
-            <div>
-              <WishListButton>
-                <CiHeart />
-              </WishListButton>
-            </div>
-          </div>
+function Card({ product, from = "false" }) {
+  const dispatch = useDispatch();
+  const myRef = useRef();
+  const navigate = useNavigate();
+  const wishlistItems = useSelector((store) => store.wishlist.wishlist);
+  console.log(wishlistItems);
+  const isItemPresentInWishList = wishlistItems.find(
+    (item) => item?.id === product?.id
+  );
+  const cartItems = useSelector((store) => store.cart.cart);
+  console.log(wishlistItems);
+  const isItemPresentInCart = cartItems.find(
+    (item) => item?.id === product?.id
+  );
 
-          <h3>
-            <span>Rs</span> {product.price}{" "}
-          </h3>
+  function navigateHandler(id) {
+    navigate(`/products/${id}`);
+  }
+  return (
+    <StyledCard
+      onClick={(e) => {
+        // console.log(!from === "wishlist", myRef.current.contains(e.target));
+        // if (from === "wishlist")
+        if (!myRef.current.contains(e.target)) navigateHandler(product.id);
+      }}
+    >
+      {/* <Link to="1234"> */}
+      <img src={product.image} alt="" />
+      <div className="product--about">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <div>
+            <h1>{product.productName}</h1>
+            {/* <p>{product.productAdjective}</p> */}
+          </div>
+          <div ref={myRef}>
+            {from === "wishlist" ? (
+              <Button
+                disabled={isItemPresentInCart}
+                size="textIcon"
+                variation="transparent"
+                onClick={() => dispatch(addItemToCart(product))}
+              >
+                {isItemPresentInCart ? (
+                  <HiMiniShoppingCart />
+                ) : (
+                  <HiOutlineShoppingCart />
+                )}
+              </Button>
+            ) : (
+              <Button
+                disabled={isItemPresentInWishList}
+                onClick={() => dispatch(addItemToWishlist(product))}
+                size="textIcon"
+                variation="transparent"
+              >
+                {isItemPresentInWishList ? <HiHeart /> : <HiOutlineHeart />}
+              </Button>
+            )}
+          </div>
         </div>
-      </Link>
+
+        <h3>
+          <span>Rs</span> {product.mrp}{" "}
+        </h3>
+      </div>
+      {from === "wishlist" && (
+        <Button
+          onClick={() => dispatch(deleteItemFromWishList(product.id))}
+          style={{
+            position: "absolute",
+            top: ".3rem",
+            right: ".3rem",
+            color: "#fff",
+          }}
+          size="iconText"
+          variation="transparent"
+        >
+          <HiMiniXMark />
+        </Button>
+      )}
     </StyledCard>
   );
 }

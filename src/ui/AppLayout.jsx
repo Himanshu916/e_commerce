@@ -1,31 +1,28 @@
 import { Outlet } from "react-router-dom";
 import Header from "../pages/Header";
-import SideBar from "../pages/SideBar";
+// import SideBar from "./SideBar";
 import styled from "styled-components";
+import { QuantityProvider } from "../contexts/QuantityContext";
 // import ModalNavigation from "./ModalNavigation";
 
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr;
   height: 100vh;
-
-  @media (min-width: 800px) {
-    grid-template-columns: 26rem 1fr;
-  }
 `;
 
-const Main = styled.main`
-  /* background-color: var(--color-grey-300); */
-`;
+const Main = styled.main``;
 
 function AppLayout() {
   return (
     <StyledAppLayout>
       <Header />
-      <SideBar />
+
       <Main>
-        <Outlet />
+        <QuantityProvider>
+          <Outlet />
+        </QuantityProvider>
       </Main>
     </StyledAppLayout>
   );

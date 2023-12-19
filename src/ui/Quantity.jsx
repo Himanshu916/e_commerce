@@ -1,5 +1,13 @@
 import styled from "styled-components";
 import Button from "./Button";
+import { increaseQuantityInCartItem } from "../features/cart/cartSlice";
+import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
+// import { increaseQuantityFromCart } from "../features/cart/cartSlice";
+// import { useQuantity } from "../contexts/QuantityContext";
+
+// import { useDispatch } from "react-redux";
+// import { increaseQuantityOfItemInCart } from "../features/cart/cartSlice";
 
 const CartItemQuantity = styled.div`
   margin: 1rem 0;
@@ -11,14 +19,28 @@ const CartItemQuantity = styled.div`
   }
 `;
 
-function Quantity() {
+function Quantity({ quantity, increaseHandler, decreaseHandler, itemId }) {
+  const dispatch = useDispatch();
   return (
     <CartItemQuantity>
-      <Button size="small" variation="primary">
+      <Button
+        disabled={quantity === 10}
+        onClick={() => {
+          increaseHandler();
+          dispatch(increaseQuantityInCartItem(itemId));
+        }}
+        size="xsmall"
+        variation="primary"
+      >
         +
       </Button>
-      <span>Quantity : 1 </span>
-      <Button size="small" variation="primary">
+      <span>Quantity :{quantity} </span>
+      <Button
+        disabled={quantity === 1}
+        onClick={decreaseHandler}
+        size="xsmall"
+        variation="primary"
+      >
         -
       </Button>
     </CartItemQuantity>

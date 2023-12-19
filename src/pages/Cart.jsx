@@ -1,7 +1,7 @@
-import HorizontalProductCard from "../ui/HorizontalProductCard";
+import CartItems from "../features/cart/CartItems";
 
 function Cart() {
-  return <HorizontalProductCard />;
+  return <CartItems />;
 }
 
 export default Cart;

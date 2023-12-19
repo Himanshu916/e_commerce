@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import Card from "../ui/Card";
+import { useSelector } from "react-redux";
+import Row from "../ui/Row";
+import Heading from "../ui/Heading";
 
 const Cards = styled.div`
   display: grid;
@@ -12,14 +15,21 @@ const Cards = styled.div`
     row-gap: 1.5rem;
   }
 `;
-const products = [];
+
 function WishList() {
+  const wishlist = useSelector((state) => state.wishlist.wishlist);
+  console.log(wishlist);
+  if (!wishlist.length) return <p>Add Items in wishlist</p>;
+
   return (
-    <Cards>
-      {products.map((item) => (
-        <Card key={item.productName} product={item} />
-      ))}
-    </Cards>
+    <Row type="consistentPadding">
+      <Heading as="h3">Liked Items</Heading>
+      <Cards>
+        {wishlist.map((item) => (
+          <Card key={item.productName} product={item} from="wishlist" />
+        ))}
+      </Cards>
+    </Row>
   );
 }
 
