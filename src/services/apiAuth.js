@@ -26,7 +26,7 @@ export async function login({ email, password }) {
   });
 
   if (error) throw new Error("please provide correct email or password");
-  console.log(data, "in login api");
+
   return data;
 }
 

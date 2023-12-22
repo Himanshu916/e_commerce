@@ -3,6 +3,7 @@ import Card from "../ui/Card";
 import { useSelector } from "react-redux";
 import Row from "../ui/Row";
 import Heading from "../ui/Heading";
+import NoItem from "../ui/NoItem";
 
 const Cards = styled.div`
   display: grid;
@@ -18,8 +19,8 @@ const Cards = styled.div`
 
 function WishList() {
   const wishlist = useSelector((state) => state.wishlist.wishlist);
-  console.log(wishlist);
-  if (!wishlist.length) return <p>Add Items in wishlist</p>;
+
+  if (!wishlist.length) return <NoItem where="Wishlist" />;
 
   return (
     <Row type="consistentPadding">

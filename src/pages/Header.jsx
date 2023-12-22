@@ -1,21 +1,28 @@
+/* eslint-disable no-unused-vars */
 import styled from "styled-components";
 import { HiMenu } from "react-icons/hi";
 import Modal from "../ui/Modal";
 import ModalNavigation from "../ui/ModalNavigation";
 import { useLogout } from "../features/authentication/useLogout";
+import DarkModeToggle from "../ui/DarkModeToggle";
+import { HiOutlineHeart, HiOutlineShoppingCart } from "react-icons/hi2";
+import Button from "../ui/Button";
+import Row from "../ui/Row";
+import { useNavigate } from "react-router-dom";
 
 const StyledHeader = styled.div`
   grid-column: 1/-1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--color-grey-200);
+
   border-radius: 100px;
   padding: 0.5rem 1.5rem;
 `;
 
 function Header() {
   const { logout, isLoading } = useLogout();
+  const navigate = useNavigate();
   return (
     <StyledHeader>
       <Modal>
@@ -26,7 +33,7 @@ function Header() {
           <ModalNavigation />
         </Modal.Window>
       </Modal>
-
+      <DarkModeToggle />
       <input
         style={{
           flex: 1,
@@ -38,21 +45,34 @@ function Header() {
         name=""
         id=""
       />
-      <div
-        style={{
-          backgroundColor: "green",
-          padding: ".5rem 1rem",
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#fff",
-        }}
+      <Button
+        onClick={() => navigate("/wishlist")}
+        size="small"
+        variation="transparent"
       >
-        <button disabled={isLoading} onClick={logout}>
+        <Row>
+          <span>
+            <HiOutlineHeart />
+          </span>
+          <span>Wishist</span>
+        </Row>
+      </Button>
+      <Button
+        onClick={() => navigate("/cart")}
+        size="small"
+        variation="transparent"
+      >
+        <Row>
+          <span>
+            <HiOutlineShoppingCart />
+          </span>
+          <span>Cart</span>
+        </Row>
+      </Button>
+
+      {/* <button disabled={isLoading} onClick={logout}>
           Logout
-        </button>
-      </div>
+        </button> */}
     </StyledHeader>
   );
 }

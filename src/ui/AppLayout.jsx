@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../pages/Header";
 // import SideBar from "./SideBar";
 import styled from "styled-components";
-import { QuantityProvider } from "../contexts/QuantityContext";
+
 // import ModalNavigation from "./ModalNavigation";
 
 const StyledAppLayout = styled.div`
@@ -20,9 +20,7 @@ function AppLayout() {
       <Header />
 
       <Main>
-        <QuantityProvider>
-          <Outlet />
-        </QuantityProvider>
+        <Outlet />
       </Main>
     </StyledAppLayout>
   );

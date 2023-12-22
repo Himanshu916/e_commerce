@@ -18,7 +18,6 @@ function UpdateAccountData() {
   const { updateUser, isUpdating } = useUpdateUser();
   const [fullName, setFullName] = useState(currentFullName);
   const [avatar, setAvatar] = useState(null);
-  //   console.log(user);
 
   function handleSubmit(e) {
     e.preventDefault();

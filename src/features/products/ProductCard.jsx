@@ -7,14 +7,19 @@ import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
 import List from "../../ui/List";
 import { Tag } from "../../ui/Tag";
-import { addItemToWishlist } from "../wishlist/wishlistSlice";
+import {
+  addItemToWishlist,
+  deleteItemFromWishList,
+} from "../wishlist/wishlistSlice";
+import { useAddCart } from "../cart/useAddCart";
+import { useUpdateCart } from "../cart/useUpdateCart";
 
 const Product = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
   /* padding: 1.5rem; */
-  background-color: #fff;
+  background-color: var(--color-grey-50);
   border-radius: var(--border-radius-md);
   overflow: hidden;
   padding-bottom: 1rem;
@@ -52,9 +57,12 @@ const ProductsDetails = styled.div`
 function ProductCard() {
   const dispatch = useDispatch();
   const { product, isLoading } = useProduct();
+  const { addToCart } = useAddCart();
+  const { updateCart } = useUpdateCart();
+
   const cartItems = useSelector((store) => store.cart.cart);
   const wishlistItems = useSelector((store) => store.wishlist.wishlist);
-  // const [quantity, setQuantity] = useState(1);
+
   if (isLoading) return <p>Loading...</p>;
   const isItemPresentInCart = cartItems.find(
     (item) => item?.id === product?.id
@@ -63,14 +71,7 @@ function ProductCard() {
   const isItemPresentInWishlist = wishlistItems.find(
     (item) => item?.id === product?.id
   );
-  // function increaseQuantity() {
-  //   setQuantity((state) => state + 1);
-  // }
 
-  // function decreaseQuantity() {
-  //   setQuantity((state) => state - 1);
-  // }
-  console.log(product);
   return (
     <Row type="consistentPadding">
       <Heading as="h3">Product</Heading>
@@ -109,6 +110,9 @@ function ProductCard() {
             <Button
               onClick={() => {
                 dispatch(addItemToCart({ ...product, quantity: 1 }));
+                cartItems.length === 0
+                  ? addToCart({ ...product, quantity: 1 })
+                  : updateCart([...cartItems, { ...product, quantity: 1 }]);
               }}
               disabled={isItemPresentInCart}
               style={{ flex: 1 }}
@@ -118,13 +122,18 @@ function ProductCard() {
               Add To Cart
             </Button>
             <Button
-              disabled={isItemPresentInWishlist}
-              onClick={() => dispatch(addItemToWishlist(product))}
+              onClick={() => {
+                isItemPresentInWishlist
+                  ? dispatch(deleteItemFromWishList(product.id))
+                  : dispatch(addItemToWishlist(product));
+              }}
               style={{ flex: 1 }}
               size="large"
               variation="secondary"
             >
-              WishList
+              {isItemPresentInWishlist
+                ? "Remove from Wishlist"
+                : "Add To Wishlist"}
             </Button>
           </div>
         </ProductsDetails>

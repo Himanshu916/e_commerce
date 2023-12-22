@@ -40,10 +40,16 @@ const HomeContent = styled.div`
 
 const HomeHeading = styled.h1`
   text-align: center;
-  color: var(--color-grey-50);
+  color: #fff;
   font-size: 2.4rem;
 `;
 
+const Name = styled.h2`
+  text-align: center;
+  color: #fff;
+  color: var(--color-brand-100);
+  font-size: 2rem;
+`;
 function Home() {
   const navigate = useNavigate();
   return (
@@ -52,8 +58,9 @@ function Home() {
 
       <HomeBox>
         <HomeContent>
+          <Name>Mom&apos;s Nivaala</Name>
           <HomeHeading>
-            Get Maa Ke Haath Ka khaana with lots of love.
+            Food from mother&apos;s hand gives trust of purity.
           </HomeHeading>
           <Button
             onClick={() => navigate("/products")}

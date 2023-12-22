@@ -6,7 +6,7 @@ const StyledTag = styled.span`
     css`
       color: var(--color-red-700);
       display: inline-block;
-      margin-right: 0.8rem;
+      /* margin-right: 0.8rem; */
     `}
 
   ${(props) =>

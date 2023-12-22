@@ -39,7 +39,7 @@ function Login() {
       </Heading>
       <LoginForm />
       <Direct>
-        <Heading as="h3">New to amazon</Heading>
+        <Heading as="h3">New to Mom&apos; Nivaala ?</Heading>
         <Button
           onClick={() => navigate("/register")}
           style={{

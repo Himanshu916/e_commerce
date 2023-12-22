@@ -4,7 +4,6 @@ import Cards from "../../ui/Cards";
 import Card from "../../ui/Card";
 import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
-// import EmptyDiv from "../../ui/EmptyDiv";
 
 function ProductsCard() {
   const { products, isLoading } = useProducts();
@@ -12,7 +11,7 @@ function ProductsCard() {
   const filter = searchParams.get("category") || "all";
   const sortBy = searchParams.get("sortBy");
   const navigate = useNavigate();
-  console.log(filter);
+
   if (isLoading) return <p>Loading...</p>;
   let filteredProducts;
   if (filter === "all") filteredProducts = products;
@@ -27,7 +26,7 @@ function ProductsCard() {
 
   if (sortBy) {
     const [field, direction] = sortBy.split("-");
-    console.log(field, direction);
+
     const modifier = direction === "asc" ? 1 : -1;
     filteredProducts.sort((a, b) => (a[field] - b[field]) * modifier);
   }

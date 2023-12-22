@@ -9,6 +9,7 @@ export function useLogout() {
     mutationFn: logoutApi,
     onSuccess: () => {
       queryClient.removeQueries();
+      localStorage.removeItem("cart");
       navigate("/login", { replace: true });
     },
     onError: (error) => {

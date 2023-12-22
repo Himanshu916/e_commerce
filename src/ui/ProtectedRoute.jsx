@@ -4,14 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
-  const { user, isLoading, isAuthenticated } = useUser();
-  console.log(user, isLoading, isAuthenticated, "kya run hua");
-  //   const isAuthenticated = user?.role === "authenticated";
+  const { isLoading, isAuthenticated } = useUser();
 
   useEffect(
     function () {
-      console.log(isAuthenticated, isLoading);
-      if (!isAuthenticated && !isLoading) navigate("/login");
+      if (!isAuthenticated && !isLoading) navigate("/login", { replace: true });
     },
     [isAuthenticated, isLoading, navigate]
   );

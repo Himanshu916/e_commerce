@@ -84,8 +84,13 @@ function Price({ totalPrice, totalMRP, length }) {
           <span>Discount on MRP</span>
           <Tag type="discount">
             {" "}
-            <span>{-totalDiscount}</span>
+            <span>Rs {-totalDiscount}</span>
           </Tag>{" "}
+        </ListItem>
+        <ListItem>
+          <span>Amount after discount</span>
+
+          <span>Rs {totalPrice}</span>
         </ListItem>
         <ListItem>
           <span>Platform Fee</span> <span>Rs 10</span>{" "}

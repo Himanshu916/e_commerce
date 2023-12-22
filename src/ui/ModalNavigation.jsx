@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useRef } from "react";
 import {
+  HiArrowRightOnRectangle,
   HiOutlineArrowLeftOnRectangle,
   HiOutlineHeart,
   HiOutlineHome,
@@ -8,10 +10,13 @@ import {
   HiOutlineShoppingBag,
   HiOutlineWrench,
 } from "react-icons/hi2";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Overlay from "./Overlay";
 import { useUser } from "../features/authentication/useUser";
+import { useLogin } from "../features/authentication/useLogin";
+import Button from "./Button";
+import { useLogout } from "../features/authentication/useLogout";
 
 const Profile = styled.div`
   padding: 0 2rem;
@@ -62,6 +67,8 @@ const Modal = styled.div`
   padding: 0.5rem 0rem;
   transition: all 4s;
   z-index: 1000;
+  overflow: hidden;
+  min-height: 100vh;
 `;
 
 // Overlay.defaultProps={
@@ -93,7 +100,6 @@ const UnorderedList = styled.ul`
     padding: 0.8rem 2rem;
     border-top-right-radius: 100px;
     border-bottom-right-radius: 100px;
-    background-color: var(--color-brand-50);
   }
   & li a:link,
   & li a:visited,
@@ -132,11 +138,10 @@ const P = styled.p`
 
 function ModalNavigation({ close }) {
   const myRef = useRef();
-  const { user } = useUser();
-
-  const { fullName, avatar } = user.user_metadata;
-  console.log(fullName, avatar, "hi");
-
+  const { user, isAuthenticated, isLoading } = useUser();
+  const { logout, isLoading: isLoggingOut } = useLogout();
+  const { login, isLoading: isLoggingIn } = useLogin();
+  const navigate = useNavigate();
   useEffect(
     function () {
       function handleClick(e) {
@@ -152,24 +157,43 @@ function ModalNavigation({ close }) {
     [close]
   );
 
+  if (isLoading) return null;
+
+  const { fullName, avatar } = user?.user_metadata || {};
+
   return (
     <Overlay>
       <Modal ref={myRef}>
-        <Profile>
-          <StyledUserAvatar>
-            <Avatar
-              src={avatar || "../../../public/default-user.jpg"}
-              alt={`H`}
-            />
-            {/* <span>{fullName}</span> */}
-          </StyledUserAvatar>
+        {!user ? (
+          <Profile>
+            <StyledUserAvatar>
+              <Avatar src={"../../../public/default-user.jpg"} alt={`H`} />
+              {/* <span>{fullName}</span> */}
+            </StyledUserAvatar>
 
-          {/* <Avatar>H</Avatar> */}
-          <div>
-            <p>{fullName}</p>
-            <p>{user.email}</p>
-          </div>
-        </Profile>
+            {/* <Avatar>H</Avatar> */}
+            <div>
+              <p>User Name</p>
+              <p>User Email</p>
+            </div>
+          </Profile>
+        ) : (
+          <Profile>
+            <StyledUserAvatar>
+              <Avatar
+                src={avatar || "../../../public/default-user.jpg"}
+                alt={`H`}
+              />
+              {/* <span>{fullName}</span> */}
+            </StyledUserAvatar>
+
+            {/* <Avatar>H</Avatar> */}
+            <div>
+              <p>{fullName}</p>
+              <p>{user.email}</p>
+            </div>
+          </Profile>
+        )}
         <UnorderedList onClick={() => close()}>
           <li>
             <NavLink to="/">
@@ -180,7 +204,7 @@ function ModalNavigation({ close }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="products">
+            <NavLink to="/products">
               <span>
                 <HiOutlinePaperAirplane />
               </span>
@@ -188,7 +212,7 @@ function ModalNavigation({ close }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="wishlist">
+            <NavLink to="/wishlist">
               <span>
                 <HiOutlineHeart />
               </span>
@@ -196,7 +220,7 @@ function ModalNavigation({ close }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="cart">
+            <NavLink to="/cart">
               <span>
                 <HiOutlineShoppingBag />
               </span>
@@ -204,7 +228,7 @@ function ModalNavigation({ close }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="orders">
+            <NavLink to="/orders">
               <span>
                 <HiOutlineRectangleStack />
               </span>
@@ -212,7 +236,7 @@ function ModalNavigation({ close }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="account">
+            <NavLink to="/account">
               <span>
                 <HiOutlineWrench />
               </span>
@@ -220,12 +244,25 @@ function ModalNavigation({ close }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="login">
-              <span>
-                <HiOutlineArrowLeftOnRectangle />
-              </span>
-              <span> Login/Logout</span>
-            </NavLink>
+            {isAuthenticated ? (
+              <Button
+                style={{ padding: "0.8rem 2rem" }}
+                onClick={logout}
+                disabled={isLoggingOut}
+              >
+                <span>
+                  <HiOutlineArrowLeftOnRectangle />
+                </span>
+                <span> LogOut</span>
+              </Button>
+            ) : (
+              <NavLink to="/login">
+                <span>
+                  <HiArrowRightOnRectangle />
+                </span>
+                <span> Login</span>
+              </NavLink>
+            )}
           </li>
         </UnorderedList>
         <NavFooter>

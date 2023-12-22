@@ -21,7 +21,7 @@ const StyledCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: #fff;
+  background-color: var(--color-grey-50);
   gap: 0.75rem;
   cursor: pointer;
   border-radius: var(--border-radius-sm);
@@ -56,14 +56,15 @@ const StyledCard = styled.div`
 function Card({ product, from = "false" }) {
   const dispatch = useDispatch();
   const myRef = useRef();
+  const ref2 = useRef();
   const navigate = useNavigate();
   const wishlistItems = useSelector((store) => store.wishlist.wishlist);
-  console.log(wishlistItems);
+
   const isItemPresentInWishList = wishlistItems.find(
     (item) => item?.id === product?.id
   );
   const cartItems = useSelector((store) => store.cart.cart);
-  console.log(wishlistItems);
+
   const isItemPresentInCart = cartItems.find(
     (item) => item?.id === product?.id
   );
@@ -74,12 +75,13 @@ function Card({ product, from = "false" }) {
   return (
     <StyledCard
       onClick={(e) => {
-        // console.log(!from === "wishlist", myRef.current.contains(e.target));
-        // if (from === "wishlist")
-        if (!myRef.current.contains(e.target)) navigateHandler(product.id);
+        if (from === "wishlist") {
+          if (!ref2.current.contains(e.target)) navigateHandler(product.id);
+        } else {
+          if (!myRef.current.contains(e.target)) navigateHandler(product.id);
+        }
       }}
     >
-      {/* <Link to="1234"> */}
       <img src={product.image} alt="" />
       <div className="product--about">
         <div
@@ -91,7 +93,6 @@ function Card({ product, from = "false" }) {
         >
           <div>
             <h1>{product.productName}</h1>
-            {/* <p>{product.productAdjective}</p> */}
           </div>
           <div ref={myRef}>
             {from === "wishlist" ? (
@@ -109,8 +110,11 @@ function Card({ product, from = "false" }) {
               </Button>
             ) : (
               <Button
-                disabled={isItemPresentInWishList}
-                onClick={() => dispatch(addItemToWishlist(product))}
+                onClick={() => {
+                  isItemPresentInWishList
+                    ? dispatch(deleteItemFromWishList(product.id))
+                    : dispatch(addItemToWishlist(product));
+                }}
                 size="textIcon"
                 variation="transparent"
               >
@@ -126,6 +130,7 @@ function Card({ product, from = "false" }) {
       </div>
       {from === "wishlist" && (
         <Button
+          ref={ref2}
           onClick={() => dispatch(deleteItemFromWishList(product.id))}
           style={{
             position: "absolute",

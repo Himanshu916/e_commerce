@@ -32,7 +32,18 @@ function LoginForm() {
       }
     );
   }
-
+  function loginAsGuest(e) {
+    e.preventDefault();
+    login(
+      { email: "himanshu@gmail.com", password: "987654321" },
+      {
+        onSettled: () => {
+          setEmail("");
+          setPassword("");
+        },
+      }
+    );
+  }
   return (
     <Form onSubmit={submitHandler}>
       <FormRowVertical label="Email address">
@@ -61,6 +72,16 @@ function LoginForm() {
         <Button size="large" variation="primary" disabled={isLoading}>
           {/* {!isLoading ? "Log in" : <SpinnerMini />} */}
           Log In
+        </Button>
+        <Button
+          onClick={loginAsGuest}
+          type="button"
+          size="large"
+          variation="primary"
+          disabled={isLoading}
+        >
+          {/* {!isLoading ? "Log in" : <SpinnerMini />} */}
+          Log In as Guest
         </Button>
       </FormRowVertical>
     </Form>

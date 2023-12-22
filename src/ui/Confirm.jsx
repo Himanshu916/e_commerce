@@ -4,8 +4,10 @@ import Button from "./Button";
 import EmptyDiv from "./EmptyDiv";
 import { HiMiniXMark } from "react-icons/hi2";
 import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteItemFromCart } from "../features/cart/cartSlice";
+// import { useDeleteFromCart } from "../features/cart/useDeleteFromCart";
+import { useUpdateCart } from "../features/cart/useUpdateCart";
 
 const Modal = styled.div`
   background-color: var(--color-grey-50);
@@ -42,6 +44,9 @@ const ConfirmBox = styled.div`
 
 function Confirm({ close, id }) {
   const myRef = useRef();
+  const cartItems = useSelector((store) => store.cart.cart);
+
+  const { updateCart } = useUpdateCart();
   const dispatch = useDispatch();
   useEffect(
     function () {
@@ -77,7 +82,13 @@ function Confirm({ close, id }) {
               }}
             >
               <Button
-                onClick={() => dispatch(deleteItemFromCart(id))}
+                onClick={() => {
+                  dispatch(deleteItemFromCart(id));
+                  const cartAfterDeletingItem = cartItems.filter(
+                    (item) => item.id !== id
+                  );
+                  updateCart(cartAfterDeletingItem);
+                }}
                 style={{ flex: 1 }}
                 size="confirmSmall"
                 variation="confirm-yes"

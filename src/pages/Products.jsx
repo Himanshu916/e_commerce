@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ProductsCard from "../features/products/ProductsCard";
 import SideBar from "../ui/SideBar";
+import Header from "./Header";
 
 const ProductsLayout = styled.div`
   display: grid;
@@ -17,6 +18,7 @@ function Products() {
   return (
     <>
       <ProductsLayout>
+        <Header />
         <SideBar />
 
         <ProductsCard />
