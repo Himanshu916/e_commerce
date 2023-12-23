@@ -180,10 +180,7 @@ function ModalNavigation({ close }) {
         ) : (
           <Profile>
             <StyledUserAvatar>
-              <Avatar
-                src={avatar || "../../../public/default-user.jpg"}
-                alt={`H`}
-              />
+              <Avatar src={avatar || "default-user.jpg"} alt={`H`} />
               {/* <span>{fullName}</span> */}
             </StyledUserAvatar>
 

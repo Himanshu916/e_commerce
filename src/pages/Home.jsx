@@ -21,7 +21,7 @@ const HomeBox = styled.div`
   min-height: 100vh;
   justify-content: center;
   align-content: center;
-  background-image: url("../src/images/home_bg.jpg");
+  background-image: url("https://zwvvfeqbcqqbspxawwsq.supabase.co/storage/v1/object/public/images/home_bg.jpg?t=2023-12-23T10%3A18%3A14.298Z");
   z-index: 0;
   background-size: cover;
   background-position: center;
