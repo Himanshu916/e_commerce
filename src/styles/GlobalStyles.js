@@ -2,6 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
 :root {
+
+
   &, &.light-mode {
   /* Grey */
   --color-grey-0: #fff;
@@ -127,7 +129,9 @@ const GlobalStyles = createGlobalStyle`
 html {
   font-size: 62.5%;
 }
-
+.hidden{
+  overflow: hidden;
+}
 body {
   font-family: "Poppins", sans-serif;
   color: var(--color-grey-700);

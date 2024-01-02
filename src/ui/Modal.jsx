@@ -1,4 +1,10 @@
-import { cloneElement, createContext, useContext, useState } from "react";
+import {
+  cloneElement,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import styled from "styled-components";
 import Button from "./Button";
 
@@ -6,8 +12,20 @@ const ModalContext = createContext();
 
 function Modal({ children }) {
   const [open, setOpen] = useState("");
-  const close = () => setOpen("");
 
+  useEffect(
+    function () {
+      if (open) {
+        console.log("runhua");
+        document.documentElement.classList.add("hidden");
+      } else {
+        console.log("haa bhai");
+        document.documentElement.classList.remove("hidden");
+      }
+    },
+    [open]
+  );
+  const close = () => setOpen("");
   return (
     <ModalContext.Provider value={{ open, setOpen, close }}>
       {children}
