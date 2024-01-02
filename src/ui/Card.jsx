@@ -183,7 +183,7 @@ const PromotedLabel = styled.label`
   font-weight: 600;
   font-size: 1rem;
   padding: 0.2rem;
-  z-index: 1000;
+  z-index: 800;
 `;
 
 export const withPromotedLabel = (Card) => {
