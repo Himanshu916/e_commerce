@@ -9,6 +9,7 @@ import { HiOutlineHeart, HiOutlineShoppingCart } from "react-icons/hi2";
 import Button from "../ui/Button";
 import Row from "../ui/Row";
 import { useNavigate } from "react-router-dom";
+import Search from "../ui/SearchBar";
 
 const StyledHeader = styled.div`
   grid-column: 1/-1;
@@ -33,46 +34,35 @@ function Header() {
           <ModalNavigation />
         </Modal.Window>
       </Modal>
-      <DarkModeToggle />
-      <input
-        style={{
-          flex: 1,
-          backgroundColor: "transparent",
-          padding: "1rem 0.5rem",
-        }}
-        type="search"
-        placeholder="Search Here"
-        name=""
-        id=""
-      />
-      <Button
-        onClick={() => navigate("/wishlist")}
-        size="small"
-        variation="transparent"
-      >
-        <Row>
-          <span>
-            <HiOutlineHeart />
-          </span>
-          <span>Wishist</span>
-        </Row>
-      </Button>
-      <Button
-        onClick={() => navigate("/cart")}
-        size="small"
-        variation="transparent"
-      >
-        <Row>
-          <span>
-            <HiOutlineShoppingCart />
-          </span>
-          <span>Cart</span>
-        </Row>
-      </Button>
 
-      {/* <button disabled={isLoading} onClick={logout}>
-          Logout
-        </button> */}
+      <Search placeholder="Search here for dish..." />
+      <div>
+        <DarkModeToggle />
+        <Button
+          onClick={() => navigate("/wishlist")}
+          size="small"
+          variation="transparent"
+        >
+          <Row>
+            <span>
+              <HiOutlineHeart />
+            </span>
+            <span>Wishist</span>
+          </Row>
+        </Button>
+        <Button
+          onClick={() => navigate("/cart")}
+          size="small"
+          variation="transparent"
+        >
+          <Row>
+            <span>
+              <HiOutlineShoppingCart />
+            </span>
+            <span>Cart</span>
+          </Row>
+        </Button>
+      </div>
     </StyledHeader>
   );
 }
