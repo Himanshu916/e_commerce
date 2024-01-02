@@ -34,7 +34,7 @@ function ProductsCard() {
   function navigateHandler(id) {
     navigate(`/products/${id}`);
   }
-
+  console.log(products, "how many");
   return (
     <Row type="consistentPadding">
       <Heading as="h3">Products</Heading>
