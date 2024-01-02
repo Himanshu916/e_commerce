@@ -11,10 +11,12 @@ const StyledList = styled.ul`
   }
 `;
 
-function List({ items }) {
+function List({ items, showMore }) {
+  const listItems = showMore ? items : items.slice(0, 3);
+
   return (
     <StyledList>
-      {items.map((item, index) => (
+      {listItems.map((item, index) => (
         <li key={index}>{item}</li>
       ))}
     </StyledList>

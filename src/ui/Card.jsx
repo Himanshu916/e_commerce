@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react/display-name */
 // import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./Button";
@@ -16,6 +18,7 @@ import {
 import { useRef } from "react";
 import { addItemToCart } from "../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { Tag } from "./Tag";
 
 const StyledCard = styled.div`
   display: flex;
@@ -27,6 +30,8 @@ const StyledCard = styled.div`
   border-radius: var(--border-radius-sm);
   overflow: hidden;
   position: relative;
+  box-shadow: var(--shadow-sm);
+
   & img {
     max-width: 100%;
     aspect-ratio: 1;
@@ -50,6 +55,21 @@ const StyledCard = styled.div`
 
   & div h3 {
     font-size: 1.4rem;
+  }
+
+  @media (min-width: 800px) {
+    padding: 1rem;
+    & {
+      background-color: transparent;
+    }
+    &:hover {
+      background-color: var(--color-grey-100);
+      box-shadow: var(--shadow-md);
+    }
+
+    & img {
+      border-radius: var(--border-radius-sm);
+    }
   }
 `;
 
@@ -123,10 +143,18 @@ function Card({ product, from = "false" }) {
             )}
           </div>
         </div>
-
         <h3>
           <span>Rs</span> {product.mrp}{" "}
+          <Tag type="discount">
+            {" "}
+            <span>(-{product.discountPercentage}%)</span>{" "}
+          </Tag>
         </h3>
+        <p style={{ marginTop: ".5rem" }}>
+          <Tag type="rating">
+            <span>Rating : </span> <span>{product.rating}</span>
+          </Tag>{" "}
+        </p>
       </div>
       {from === "wishlist" && (
         <Button
@@ -147,5 +175,26 @@ function Card({ product, from = "false" }) {
     </StyledCard>
   );
 }
+
+const PromotedLabel = styled.label`
+  position: absolute;
+  background-color: var(--color-silver-700);
+  color: var(--color-silver-100);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.2rem;
+  z-index: 1000;
+`;
+
+export const withPromotedLabel = (Card) => {
+  return (props) => {
+    return (
+      <div>
+        <PromotedLabel>Promoted</PromotedLabel>
+        <Card {...props} />
+      </div>
+    );
+  };
+};
 
 export default Card;

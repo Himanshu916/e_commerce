@@ -13,6 +13,8 @@ import {
 } from "../wishlist/wishlistSlice";
 import { useAddCart } from "../cart/useAddCart";
 import { useUpdateCart } from "../cart/useUpdateCart";
+import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
+import { useState } from "react";
 
 const Product = styled.div`
   display: flex;
@@ -52,6 +54,12 @@ const ProductsDetails = styled.div`
     border-bottom: 0.5px solid var(--color-grey-200);
     padding-bottom: 1rem;
   }
+
+  @media (min-width: 800px) {
+    & .productDetails-content h2 {
+      padding-top: 2rem;
+    }
+  }
 `;
 
 function ProductCard() {
@@ -59,6 +67,7 @@ function ProductCard() {
   const { product, isLoading } = useProduct();
   const { addToCart } = useAddCart();
   const { updateCart } = useUpdateCart();
+  const [showMore, setShowMore] = useState(false);
 
   const cartItems = useSelector((store) => store.cart.cart);
   const wishlistItems = useSelector((store) => store.wishlist.wishlist);
@@ -72,6 +81,10 @@ function ProductCard() {
     (item) => item?.id === product?.id
   );
 
+  function showHandler() {
+    setShowMore(!showMore);
+  }
+
   return (
     <Row type="consistentPadding">
       <Heading as="h3">Product</Heading>
@@ -81,11 +94,25 @@ function ProductCard() {
         <ProductsDetails>
           <div className="productDetails-content">
             <Heading as="h2"> {product.productName}</Heading>
-            <Heading as="h3">Rating : </Heading>
+            {/* <Heading as="h3">Rating : </Heading> */}
+            <p>
+              <Tag type="rating">
+                <span>Rating : {product.rating}</span>
+              </Tag>
+            </p>
             <Row type="horizontal">
               <Heading as="h4">
-                <Tag type="discount">{-product.discountPercentage}%</Tag>
-                Rs {product.mrp}
+                <Tag type="price">
+                  {Math.round(
+                    product.mrp -
+                      (product.discountPercentage * product.mrp) / 100
+                  )}
+                </Tag>
+                <Tag type="mrp"> Rs {product.mrp}</Tag>
+                <p>
+                  <span>Discount : </span>{" "}
+                  <Tag type="discount">{-product.discountPercentage}%</Tag>
+                </p>
               </Heading>
               <Heading as="h4">
                 <Tag type="inStock">
@@ -95,8 +122,18 @@ function ProductCard() {
             </Row>
           </div>
           <div className="productDetails-content">
-            <Heading as="h2">About this Item</Heading>
-            <List items={product.description} />
+            <Row type="horizontal">
+              <Heading as="h2">About this Item</Heading>
+              <Button
+                variations="transparent"
+                sizes="xsmall"
+                onClick={showHandler}
+              >
+                {showMore ? <HiChevronUp /> : <HiChevronDown />}
+              </Button>
+            </Row>
+
+            <List showMore={showMore} items={product.description} />
           </div>
 
           <div
